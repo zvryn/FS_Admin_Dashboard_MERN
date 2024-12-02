@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -26,3 +26,12 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+
+/*MONGOOSE SETUP*/
+const PORT = process.env.PORT || 9000;
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Running At Port:${PORT}`));
+  })
+  .catch((error) => console.log(`${error} did not connect`));
